@@ -23,7 +23,7 @@ import pl.pap.utils.Utility;
 @LocalBean
 // Path: http://localhost/<appln-folder-name>/register
 @Path("/register")
-public class Register {
+public class RegisterService {
 	// Entity manager
 	@PersistenceContext(unitName = "PAPserver", type = PersistenceContextType.TRANSACTION)
 	EntityManager entityManager;

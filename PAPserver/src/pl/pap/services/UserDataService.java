@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import pl.pap.model.User;
 
 @Path("/userinfo") 
-public class UserInfo {
+public class UserDataService {
 	  // HTTP Get Method
 	  @GET
 	  @Path("/getinfo") 

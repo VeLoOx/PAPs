@@ -20,7 +20,7 @@ import pl.pap.model.User;
 @LocalBean
 // Path: http://localhost/<appln-folder-name>/login
 @Path("/login")
-public class Login {
+public class LoginService {
 	// Entity manager
 	@PersistenceContext(unitName = "PAPserver", type = PersistenceContextType.TRANSACTION)
 	EntityManager entityManager;
@@ -31,8 +31,6 @@ public class Login {
 	@Path("/dologin")
 	// Produces JSON as response
 	@Produces(MediaType.APPLICATION_JSON)
-	// Query parameters are parameters:
-	// http://localhost/<appln-folder-name>/login/dologin?username=abc&password=xyz
 	public String doLogin(@QueryParam("login") String login,
 			@QueryParam("password") String pwd) {
 		System.out.println("Params: " + login + " " + pwd);

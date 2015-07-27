@@ -6,6 +6,9 @@
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<jta-data-source>PAPResource</jta-data-source>
 		<class>pl.pap.model.User</class>
+		<class>pl.pap.model.Route</class>
+		<class>pl.pap.model.MarkerModel</class> 
+
 		<properties>
 			<property name="eclipselink.target-database" value="Oracle" />
 			<property name="eclipselink.logging.level" value="FINEST" />
@@ -16,7 +19,7 @@
 			<property name="eclipselink.logging.session" value="false" />
 			<property name="eclipselink.logging.exceptions" value="false" />
 			<property name="eclipselink.target-server" value="SunAS9" />
-			<property name="eclipselink.ddl-generation" value="create-tables" />
+			<property name="eclipselink.ddl-generation" value="create-tables" />		
 			<property name="eclipselink.ddl-generation.output-mode"
 				value="database" />
 		</properties>

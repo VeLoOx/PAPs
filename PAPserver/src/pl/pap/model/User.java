@@ -19,10 +19,16 @@ query = "SELECT u " +
 @NamedQuery(name = "checkUser", 
 query = "SELECT u " +
         "FROM User u "+
-		"WHERE u.login = :login" )
+		"WHERE u.login = :login" ),
 
 
-})
+
+@NamedQuery(name = "checkUserSession", 
+query = "SELECT u " +
+        "FROM User u "+
+		"WHERE u.login = :login and u.sessionID=:sessionID" )
+}
+)
 @XmlRootElement(name = "user")
 @XmlType(propOrder = {"name", "login", "password" })
 @Entity
@@ -37,6 +43,8 @@ public class User {
 	private String login;
 	@Column(name="USER_PASSWORD")
 	private String password;
+	
+	private String sessionID;
 	
 	public String getName() {
 		return name;
@@ -56,5 +64,12 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getSessionID() {
+		return sessionID;
+	}
+	public void setSessionID(String sessionID) {
+		this.sessionID = sessionID;
+	}
+
 
 }
