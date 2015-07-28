@@ -39,6 +39,7 @@ public class RegisterService {
 	public String doRegister(@QueryParam("name") String name,
 			@QueryParam("login") String login,
 			@QueryParam("password") String pwd) {
+		System.out.println("RegisterService");
 		String response = "";
 		// System.out.println("Inside doLogin "+uname+"  "+pwd);
 		if (!Utility.isNotNull(login) || !Utility.isNotNull(pwd)) {

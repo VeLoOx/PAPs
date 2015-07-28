@@ -33,6 +33,7 @@ public class LoginService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String doLogin(@QueryParam("login") String login,
 			@QueryParam("password") String pwd) {
+		System.out.println("LoginService");
 		System.out.println("Params: " + login + " " + pwd);
 		String response = "";
 		if (checkCredentials(login, pwd)) {
