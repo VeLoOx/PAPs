@@ -87,9 +87,9 @@ public class RequestRouteService {
 
 	}
 
-	private boolean extractRoute(String autor, long routeID) {
+	private boolean extractRoute(String autor, long routeId) {
 
-		Route route2 = entityManager.find(Route.class, routeID);
+		Route route2 = entityManager.find(Route.class, routeId);
 
 		if (route2 == null) {
 			System.out.println("Entity extraction fail(route)");

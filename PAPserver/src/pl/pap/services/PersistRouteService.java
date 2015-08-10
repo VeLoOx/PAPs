@@ -46,7 +46,7 @@ public class PersistRouteService {
 
 		if (sg.checkSession(login, sessionId)) {
 			if (saveRoute(route)) {
-				return Utility.constructJSON("persist", true);
+				return Utility.constructDataJSON("persist", true,"Route saved ");
 			} else {
 				return Utility.constructJSON("persist", false,
 						"Database exception(Persist route)");
@@ -73,7 +73,7 @@ public class PersistRouteService {
 
 			if (sg.checkSession(login, sessionId)) {
 				if (updateRoute(route)) {
-					return Utility.constructJSON("update", true);
+					return Utility.constructDataJSON("update", true, "Route updated ");
 				} else {
 					return Utility.constructJSON("update", false,
 							"Database exception(Update route)");
