@@ -46,7 +46,7 @@ public class RequestRouteService {
 				+ " " + routeId);
 		if (sg.checkSession(login, sessionId)) {
 			if (extractRoute(autor, Long.parseLong(routeId))) {
-
+				System.out.println("Route response "+ routeResponse);
 				// return routeResponse;
 				return Utility
 						.constructDataJSON("request", true, routeResponse);
@@ -74,7 +74,7 @@ public class RequestRouteService {
 			if (extractRoutesList()) {
 
 				// return routeResponse;
-				System.out.println("Route response "+ routeResponse);
+				System.out.println("Route List response "+ routeResponse);
 				return Utility
 						.constructDataJSON("request", true, routeResponse);
 			} else {

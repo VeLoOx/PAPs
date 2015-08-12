@@ -36,33 +36,26 @@ public class RegisterService {
 	@Produces(MediaType.APPLICATION_JSON)
 	// Query parameters are parameters:
 	// http://localhost/<appln-folder-name>/register/doregister?name=pqrs&username=abc&password=xyz
-	public String doRegister(@QueryParam("name") String name,
-			@QueryParam("login") String login,
+	public String doRegister(@QueryParam("login") String login,
 			@QueryParam("password") String pwd) {
 		System.out.println("RegisterService");
 		String response = "";
 		// System.out.println("Inside doLogin "+uname+"  "+pwd);
 		if (!Utility.isNotNull(login) || !Utility.isNotNull(pwd)) {
-			response = Utility
-					.constructJSON("register", false,
-							"Login or Password can NOT be empty");
-		}
-		else if (Utility.isSpecialCharacter(login)
-				|| Utility.isSpecialCharacter(pwd)
-				|| Utility.isSpecialCharacter(name)) {
-			
+			response = Utility.constructJSON("register", false,
+					"Login or Password can NOT be empty");
+		} else if (Utility.isSpecialCharacter(login)
+				|| Utility.isSpecialCharacter(pwd)) {
+
 			response = Utility
 					.constructJSON("register", false,
 							"Special Characters are not allowed in Username and Password");
-		} 
-		else if (isUserRegistered(login)) {
+		} else if (isUserRegistered(login)) {
 			response = Utility.constructJSON("register", false,
 					"You are already registered");
-		} 
-		else if (registerUser(name, login, pwd)) {
+		} else if (registerUser(login, pwd)) {
 			response = Utility.constructJSON("register", true);
-		} 
-		else {
+		} else {
 			response = Utility
 					.constructJSON("register", false, "Error occured");
 		}
@@ -80,7 +73,7 @@ public class RegisterService {
 		try {
 			user = (User) query.getSingleResult();
 		} catch (NoResultException e) {
-				
+
 		}
 		if (user != null)
 			return true;
@@ -88,23 +81,23 @@ public class RegisterService {
 		return false;
 	}
 
-	private boolean registerUser(String name, String login, String pwd) {
-		System.out.println("Inside registerUser params: " + name + " " + login
+	private boolean registerUser(String login, String pwd) {
+		System.out.println("Inside registerUser params: " + login
 				+ " " + pwd);
 		User user = new User();
-		user.setName(name);
+		user.setName(login);
 		user.setLogin(login);
 		user.setPassword(pwd);
-		
-			try {
-				entityManager.persist(user);
-				entityManager.flush();
-				return true;
-			} catch (PersistenceException pe) {
-				System.out.println("=====ERROR CODE====");
-				System.out.println(pe.getCause());
-				return false;
-			}
+
+		try {
+			entityManager.persist(user);
+			entityManager.flush();
+			return true;
+		} catch (PersistenceException pe) {
+			System.out.println("=====ERROR CODE====");
+			System.out.println(pe.getCause());
+			return false;
+		}
 	}
 
 }

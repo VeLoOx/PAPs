@@ -1,5 +1,10 @@
 package pl.pap.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.zip.CRC32;
+
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,6 +29,7 @@ public class LoginService {
 	// Entity manager
 	@PersistenceContext(unitName = "PAPserver", type = PersistenceContextType.TRANSACTION)
 	EntityManager entityManager;
+	String sessionId;
 
 	// HTTP Get Method
 	@GET
@@ -37,7 +43,7 @@ public class LoginService {
 		System.out.println("Params: " + login + " " + pwd);
 		String response = "";
 		if (checkCredentials(login, pwd)) {
-			response = Utility.constructJSON("login", true);
+			response = Utility.constructDataJSON("login", true, sessionId);
 		} else {
 			response = Utility.constructJSON("login", false,
 					"Incorrect Email or Password");
@@ -66,19 +72,9 @@ public class LoginService {
 	 */
 	private boolean checkCredentials(String login, String pwd) {
 		System.out.println("Inside checkCredentials: " + login + " " + pwd);
-		boolean result = false;
 		User user = null;
 
 		if (Utility.isNotNull(login) && Utility.isNotNull(pwd)) {
-			/*
-			 * try { result = DBConnection.checkLogin(login, pwd); //
-			 * System.out.println("Inside checkCredentials try "+result); }
-			 * catch (Exception e) { // TODO Auto-generated catch block //
-			 * System.out.println("Inside checkCredentials catch"); result =
-			 * false; } } else { //
-			 * System.out.println("Inside checkCredentials else"); result =
-			 * false; }
-			 */
 			System.out.println("LOGIN PASS NOT NULL");
 			Query query = entityManager
 					.createNamedQuery("checkUserCredentials");
@@ -86,16 +82,34 @@ public class LoginService {
 			query.setParameter("password", pwd);
 			// Query query = entityManager.createNamedQuery("checkUser");
 			// query.setParameter("log", login);
-			System.out.println("QUERY VALUE");
 			try {
 				user = (User) query.getSingleResult();
 			} catch (NoResultException e) {
 
 			}
 
-			if (user != null)
-				result = true;
+			if (user != null)		
+				generateSessionId(login);
+				user.setSessionID(sessionId);
+				System.out.println("User sessionId after update "+sessionId);
+				return true;
 		}
-		return result;
+		
+		return false;
+	}
+
+	private void generateSessionId(String userName) {
+		System.out.println("Inside generateId");
+		CRC32 crc = new CRC32();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
+		String tmp=dateFormat.format(date)+userName;
+		System.out.println("data and name "+tmp );
+		byte bytes[]=tmp.getBytes();
+		crc.update(bytes, 0, bytes.length);
+		System.out.println("CRC from data and name " + crc.getValue());
+		sessionId=Long.toString(crc.getValue());
+		//return Long.toString(crc.getValue());
 	}
 }

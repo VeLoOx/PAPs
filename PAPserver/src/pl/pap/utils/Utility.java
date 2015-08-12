@@ -77,6 +77,7 @@ public class Utility {
      */
 	public static String constructDataJSON(String tag, boolean status,
 			String data) {
+		System.out.println("Construct JSON data:" + data);
 		JSONObject jO = new JSONObject();
 		try {
 			jO.put("tag", tag);
@@ -85,6 +86,7 @@ public class Utility {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 		}
+		System.out.println("Constructed data jO "+jO.toString());
 		return jO.toString();
 	}
 
