@@ -10,7 +10,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -28,19 +31,15 @@ public class RegisterService {
 	@PersistenceContext(unitName = "PAPserver", type = PersistenceContextType.TRANSACTION)
 	EntityManager entityManager;
 
-	// HTTP Get Method
-	@GET
+	// HTTP Post Method
+	@POST
 	// Path: http://localhost/<appln-folder-name>/register/doregister
 	@Path("/doregister")
 	// Produces JSON as response
 	@Produces(MediaType.APPLICATION_JSON)
-	// Query parameters are parameters:
-	// http://localhost/<appln-folder-name>/register/doregister?name=pqrs&username=abc&password=xyz
-	public String doRegister(@QueryParam("login") String login,
-			@QueryParam("password") String pwd) {
-		System.out.println("RegisterService");
+	public String doRegister(@FormParam("login") String login,
+			@FormParam("password") String pwd) {
 		String response = "";
-		// System.out.println("Inside doLogin "+uname+"  "+pwd);
 		if (!Utility.isNotNull(login) || !Utility.isNotNull(pwd)) {
 			response = Utility.constructJSON("register", false,
 					"Login or Password can NOT be empty");
@@ -65,7 +64,6 @@ public class RegisterService {
 	}
 
 	private boolean isUserRegistered(String login) {
-		System.out.println("isUserRegistered");
 		User user = null;
 		Query query = entityManager.createNamedQuery("checkUser");
 		query.setParameter("login", login);
@@ -82,10 +80,7 @@ public class RegisterService {
 	}
 
 	private boolean registerUser(String login, String pwd) {
-		System.out.println("Inside registerUser params: " + login
-				+ " " + pwd);
 		User user = new User();
-		user.setName(login);
 		user.setLogin(login);
 		user.setPassword(pwd);
 
@@ -94,8 +89,6 @@ public class RegisterService {
 			entityManager.flush();
 			return true;
 		} catch (PersistenceException pe) {
-			System.out.println("=====ERROR CODE====");
-			System.out.println(pe.getCause());
 			return false;
 		}
 	}

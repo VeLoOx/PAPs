@@ -31,36 +31,32 @@ public class DeleteRouteService {
 	@Path("/deleteRoute")
 	// Produces JSON as response
 	@Produces(MediaType.APPLICATION_JSON)
-	public String requestRoute(@QueryParam("login") String login,
+	public String deleteRoute(@QueryParam("login") String login,
 			@QueryParam("sessionId") String sessionId,
 			@QueryParam("id") String routeId) {
-		System.out.println("Inside deleteRoute");
-		System.out
-				.println("Params: " + login + " " + sessionId + " " + routeId);
 		if (sg.checkSession(login, sessionId)) {
 			if (removeRoute(Long.parseLong(routeId))) {
-				// return routeResponse;
-				return Utility.constructDataJSON("delete", true,
-						"Route deleted ");
+				return Utility.constructJSON("delete", true, "Route deleted ");
 			} else {
 				return (Utility.constructJSON("request", false,
 						"Database exception(Delete route)"));
 			}
 		} else
-			System.out.println("Credentials problem");
-		return Utility.constructJSON("delete", false, "Credentials problem");
+
+			return Utility
+					.constructJSON("delete", false, "Credentials problem");
 	}
 
 	private boolean removeRoute(long routeId) {
 
 		Route route2 = entityManager.find(Route.class, routeId);
 		if (route2 != null) {
-			System.out.println("Trying to remove entity");
+
 			entityManager.remove(route2);
-			System.out.println("Removed");
+
 			return true;
 		}
-		System.out.println("Nothing to remove");
+
 		return false;
 	}
 

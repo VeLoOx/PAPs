@@ -6,33 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "PAPmarker")
+
 @Embeddable
-//@Access(AccessType.FIELD)
-/*@XmlType(name = "marker")
-@XmlAccessorType(XmlAccessType.FIELD)*/
 public class MarkerModel {
-	//@Id
-	//@GeneratedValue
-	//private long ID;
-	//@Column(name="MARKERID")
 	private String markerId;
 	private double lat;
 	private double lng;
 	private String title;
 	private String snippet;
-	
-	
-	//private Route route;
-	
-	/*public Route getRoute() {
-	return route;
-}
-
-public void setRoute(Route route) {
-	this.route = route;
-}*/
 
 	public String getMarkerId() {
 		return markerId;

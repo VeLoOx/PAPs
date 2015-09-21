@@ -8,12 +8,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 public class Utility {
-	/**
-	 * Null check Method
-	 *
-	 * @param txt
-	 * @return
-	 */
 	public static boolean isNotNull(String txt) {
 		// System.out.println("Inside isNotNull");
 		return txt != null && txt.trim().length() > 0 ? true : false;
@@ -28,13 +22,6 @@ public class Utility {
 
 	}
 
-	/**
-	 * Method to construct JSON
-	 *
-	 * @param tag
-	 * @param status
-	 * @return
-	 */
 	public static String constructJSON(String tag, boolean status) {
 		JSONObject jO = new JSONObject();
 		try {
@@ -46,38 +33,21 @@ public class Utility {
 		return jO.toString();
 	}
 
-	/**
-	 * Method to construct JSON with Error Msg
-	 *
-	 * @param tag
-	 * @param status
-	 * @param err_msg
-	 * @return
-	 */
 	public static String constructJSON(String tag, boolean status,
-			String errorMessage) {
+			String message) {
 		JSONObject jO = new JSONObject();
 		try {
 			jO.put("tag", tag);
 			jO.put("status", new Boolean(status));
-			jO.put("errorMessage", errorMessage);
+			jO.put("message", message);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 		}
 		return jO.toString();
 	}
 
-	/**
-      Method to construct JSON with data payload
-	 *
-	 * @param tag
-	 * @param status
-	 * @param data
-	 * @return
-     */
 	public static String constructDataJSON(String tag, boolean status,
-			String data) {
-		System.out.println("Construct JSON data:" + data);
+			String data) {	
 		JSONObject jO = new JSONObject();
 		try {
 			jO.put("tag", tag);
@@ -86,7 +56,6 @@ public class Utility {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 		}
-		System.out.println("Constructed data jO "+jO.toString());
 		return jO.toString();
 	}
 

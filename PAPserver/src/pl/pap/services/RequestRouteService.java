@@ -1,6 +1,5 @@
 package pl.pap.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -8,7 +7,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,13 +38,13 @@ public class RequestRouteService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String requestRoute(@QueryParam("login") String login,
 			@QueryParam("sessionId") String sessionId,
-			@QueryParam("autor") String autor, @QueryParam("id") String routeId) {
+			@QueryParam("id") String routeId) {
 		System.out.println("Inside requestRoute");
-		System.out.println("Params: " + login + " " + sessionId + " " + autor
-				+ " " + routeId);
+		System.out
+				.println("Params: " + login + " " + sessionId + " " + routeId);
 		if (sg.checkSession(login, sessionId)) {
-			if (extractRoute(autor, Long.parseLong(routeId))) {
-				System.out.println("Route response "+ routeResponse);
+			if (extractRoute(Long.parseLong(routeId))) {
+				System.out.println("Route response " + routeResponse);
 				// return routeResponse;
 				return Utility
 						.constructDataJSON("request", true, routeResponse);
@@ -66,15 +64,12 @@ public class RequestRouteService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String requestRoutesList(@QueryParam("login") String login,
 			@QueryParam("sessionId") String sessionId) {
-		System.out.println("Inside requestRoutesList");
-
-		//extractRoutesList();
 
 		if (sg.checkSession(login, sessionId)) {
 			if (extractRoutesList()) {
 
 				// return routeResponse;
-				System.out.println("Route List response "+ routeResponse);
+				System.out.println("Route List response " + routeResponse);
 				return Utility
 						.constructDataJSON("request", true, routeResponse);
 			} else {
@@ -87,7 +82,7 @@ public class RequestRouteService {
 
 	}
 
-	private boolean extractRoute(String autor, long routeId) {
+	private boolean extractRoute(long routeId) {
 
 		Route route2 = entityManager.find(Route.class, routeId);
 
@@ -127,7 +122,7 @@ public class RequestRouteService {
 			Gson gson = new Gson();
 			String ret = gson.toJson(routesList);
 			System.out.println("Marshalled routesList " + ret);
-			routeResponse=ret;
+			routeResponse = ret;
 			return true;
 		}
 		return false;

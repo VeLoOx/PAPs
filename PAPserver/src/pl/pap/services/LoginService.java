@@ -39,30 +39,15 @@ public class LoginService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String doLogin(@QueryParam("login") String login,
 			@QueryParam("password") String pwd) {
-		System.out.println("LoginService");
-		System.out.println("Params: " + login + " " + pwd);
-		String response = "";
+
 		if (checkCredentials(login, pwd)) {
-			response = Utility.constructDataJSON("login", true, sessionId);
+			return Utility.constructDataJSON("login", true, sessionId);
 		} else {
-			response = Utility.constructJSON("login", false,
+			return Utility.constructJSON("login", false,
 					"Incorrect Email or Password");
 		}
-		return response;
 	}
-
-	@GET
-	// Path: http://localhost/<appln-folder-name>/login/dologin
-	@Path("/getuser")
-	// Produces JSON as response
-	@Produces(MediaType.APPLICATION_JSON)
-	// Query parameters are parameters:
-	// http://localhost/<appln-folder-name>/login/dologin?username=abc&password=xyz
-	public User getUser() {
-		System.out.println("Getting user id 1");
-		return entityManager.find(User.class, (long) 1);
-	}
-
+	
 	/**
 	 * Method to check whether the entered credential is valid
 	 *
@@ -71,45 +56,36 @@ public class LoginService {
 	 * @return
 	 */
 	private boolean checkCredentials(String login, String pwd) {
-		System.out.println("Inside checkCredentials: " + login + " " + pwd);
 		User user = null;
 
 		if (Utility.isNotNull(login) && Utility.isNotNull(pwd)) {
-			System.out.println("LOGIN PASS NOT NULL");
 			Query query = entityManager
 					.createNamedQuery("checkUserCredentials");
 			query.setParameter("login", login);
 			query.setParameter("password", pwd);
-			// Query query = entityManager.createNamedQuery("checkUser");
-			// query.setParameter("log", login);
 			try {
 				user = (User) query.getSingleResult();
 			} catch (NoResultException e) {
 
 			}
 
-			if (user != null)		
+			if (user != null) {
 				generateSessionId(login);
 				user.setSessionID(sessionId);
-				System.out.println("User sessionId after update "+sessionId);
 				return true;
+			}
 		}
-		
+
 		return false;
 	}
 
 	private void generateSessionId(String userName) {
-		System.out.println("Inside generateId");
 		CRC32 crc = new CRC32();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		System.out.println(dateFormat.format(date)); //2014/08/06 15:59:48
-		String tmp=dateFormat.format(date)+userName;
-		System.out.println("data and name "+tmp );
-		byte bytes[]=tmp.getBytes();
+		String tmp = dateFormat.format(date) + userName;
+		byte bytes[] = tmp.getBytes();
 		crc.update(bytes, 0, bytes.length);
-		System.out.println("CRC from data and name " + crc.getValue());
-		sessionId=Long.toString(crc.getValue());
-		//return Long.toString(crc.getValue());
+		sessionId = Long.toString(crc.getValue());
 	}
 }
